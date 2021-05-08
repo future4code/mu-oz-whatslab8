@@ -17,10 +17,12 @@ const Main = styled.div`
 
 const DivChat = styled.div`
   overflow-y: auto;
-  border-radius: 25px 25px 0 0; 
+  border-radius: 25px 25px 0 0;
+  display: flex;
+  flex-direction: column;
 `
 
-const DivInputs = styled.div`
+const Form = styled.form`
   display: flex;
   justify-content: space-between;
   background-color: #1e2428;
@@ -58,9 +60,13 @@ const BotaoEnviar = styled.button`
 
 const BalaoMensagem = styled.p`
     background-color: #056162;
+    width: fit-content;
+    place-self: flex-end;
+
 `
 const BalaoMensagem2 = styled.p`
     background-color: #262d31;
+    width: fit-content;
 `
 
 
@@ -78,16 +84,23 @@ class DinamicaTexto extends React.Component {
         valorInputMensagem: ""
     };
 
-    adicionaChat = () => {
+    adicionaChat = (event) => {
+        event.preventDefault()
+        
+        if (this.state.valorInputUsuario != "" && this.state.valorInputMensagem != "") {
+            
+            const novoChat = {
+                usuario: this.state.valorInputUsuario + ":",
+                mensagem: this.state.valorInputMensagem
+            };
+    
+            const novasMensagens = [...this.state.mensagens, novoChat];
+    
+            this.setState({ mensagens: novasMensagens, valorInputUsuario: "", valorInputMensagem: "" })
 
-        const novoChat = {
-            usuario: this.state.valorInputUsuario + ":",
-            mensagem: this.state.valorInputMensagem
-        };
-
-        const novasMensagens = [...this.state.mensagens, novoChat];
-
-        this.setState({ mensagens: novasMensagens, valorInputUsuario: "", valorInputMensagem: "" })
+        } else {
+            alert('Preencha todos os campos.')
+        }
 
     };
 
@@ -102,7 +115,16 @@ class DinamicaTexto extends React.Component {
 
     render() {
         const listaDeComponentes = this.state.mensagens.map((mensagem) => {
-            return (<BalaoMensagem>{mensagem.usuario} {mensagem.mensagem}</BalaoMensagem>);
+            
+            if (mensagem.usuario === "eu:") {
+                return (
+                <BalaoMensagem><strong>{mensagem.usuario}</strong> {mensagem.mensagem}</BalaoMensagem>
+                )
+            } else {
+                return (
+                    <BalaoMensagem2><strong>{mensagem.usuario}</strong> {mensagem.mensagem}</BalaoMensagem2>
+                )
+            }
         });
 
 
@@ -115,7 +137,8 @@ class DinamicaTexto extends React.Component {
                     {listaDeComponentes}
                 </DivChat>
 
-                <DivInputs>
+
+                <Form onSubmit={this.adicionaChat}>
                     <InputUsuario
                         type="text"
                         placeholder="Usuário"
@@ -128,8 +151,9 @@ class DinamicaTexto extends React.Component {
                         value={this.state.valorInputMensagem}
                         onChange={this.onChangeInputMensagem}
                     />
-                    <BotaoEnviar type={"submit"} onClick={this.adicionaChat}>Enviar</BotaoEnviar>
-                </DivInputs>
+                    <BotaoEnviar type={"submit"}>Enviar</BotaoEnviar>
+                </Form>
+
 
 
             </Main>
