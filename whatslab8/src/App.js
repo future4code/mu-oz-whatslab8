@@ -1,16 +1,49 @@
 import './App.css';
-import styled from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
 import './components/dinamicaTexto'
 import DinamicaTexto from './components/dinamicaTexto';
 
+// Estilos definidos aqui serão aplicados a toda a aplicação
+const GlobalStyle = createGlobalStyle`
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #139fa0 #000;
+  }
 
+  /* Chrome, Edge, e Safari */
+  *::-webkit-scrollbar {
+    width: 12px;
+    padding-top: 10px
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+    margin-top: 15px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #139fa0;
+    border-radius: 20px;
+    border: 3px solid #000;
+  }
+`
+
+const Raiz = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`
 
 
 function App() {
   return (
-    <div>
-     <DinamicaTexto/> 
-    </div>
+    <Raiz>
+      <GlobalStyle/>
+      <DinamicaTexto/> 
+    </Raiz>
   );
 }
 
