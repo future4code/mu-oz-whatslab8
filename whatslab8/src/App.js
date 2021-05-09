@@ -5,6 +5,11 @@ import DinamicaTexto from './components/dinamicaTexto';
 
 // Estilos definidos aqui serão aplicados a toda a aplicação
 const GlobalStyle = createGlobalStyle`
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  
   /* Firefox */
   * {
     scrollbar-width: thin;
@@ -23,7 +28,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   *::-webkit-scrollbar-thumb {
-    background-color: #139fa0;
+    background-color: #139fa0a3;
     border-radius: 20px;
     border: 3px solid #000;
   }
@@ -41,8 +46,8 @@ const Raiz = styled.div`
 function App() {
   return (
     <Raiz>
-      <GlobalStyle/>
-      <DinamicaTexto/> 
+      <GlobalStyle />
+      <DinamicaTexto />
     </Raiz>
   );
 }

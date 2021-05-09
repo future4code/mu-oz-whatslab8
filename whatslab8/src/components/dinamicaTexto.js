@@ -19,7 +19,7 @@ const DivChat = styled.div`
   overflow-y: auto;
   border-radius: 25px 25px 0 0;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
 `
 
 const Form = styled.form`
@@ -56,17 +56,34 @@ const BotaoEnviar = styled.button`
   border-radius: 5px;
   border: none;
   padding: 5px;
+
+  :hover{
+    background-color: #afafaf;
+    transition: ease 0.2s;
+  }
 `
 
 const BalaoMensagem = styled.p`
-    background-color: #056162;
+    color: whitesmoke;
+    padding: 8px 4px;
+    border-radius: 5px;
+    margin: 2px 10px;
     width: fit-content;
-    place-self: flex-end;
+    max-width: 90%;
+    overflow-wrap: anywhere;
 
+    :last-child{
+        margin-top: 20px;
+        padding: 0;
+        margin: 0;
+    }
 `
-const BalaoMensagem2 = styled.p`
+const BalaoMensagemDireita = styled(BalaoMensagem)`
+    background-color: #056162;
+    place-self: flex-end;
+`
+const BalaoMensagemEsquerda = styled(BalaoMensagem)`
     background-color: #262d31;
-    width: fit-content;
 `
 
 
@@ -94,9 +111,9 @@ class DinamicaTexto extends React.Component {
                 mensagem: this.state.valorInputMensagem
             };
     
-            const novasMensagens = [...this.state.mensagens, novoChat];
+            const novasMensagens = [novoChat, ...this.state.mensagens];
     
-            this.setState({ mensagens: novasMensagens, valorInputUsuario: "", valorInputMensagem: "" })
+            this.setState({ mensagens: novasMensagens, valorInputMensagem: "" })
 
         } else {
             alert('Preencha todos os campos.')
@@ -118,11 +135,11 @@ class DinamicaTexto extends React.Component {
             
             if (mensagem.usuario === "eu:") {
                 return (
-                <BalaoMensagem><strong>{mensagem.usuario}</strong> {mensagem.mensagem}</BalaoMensagem>
+                <BalaoMensagemDireita><strong>{mensagem.usuario}</strong> {mensagem.mensagem}</BalaoMensagemDireita>
                 )
             } else {
                 return (
-                    <BalaoMensagem2><strong>{mensagem.usuario}</strong> {mensagem.mensagem}</BalaoMensagem2>
+                    <BalaoMensagemEsquerda><strong>{mensagem.usuario}</strong> {mensagem.mensagem}</BalaoMensagemEsquerda>
                 )
             }
         });
