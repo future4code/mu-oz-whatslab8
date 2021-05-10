@@ -29,6 +29,7 @@ const Form = styled.form`
   padding: 10px 15px;
   border-radius: 0 0 25px 25px;
 `
+
 const InputUsuario = styled.input`
   width: 23%;
   border-radius: 5px;
@@ -39,6 +40,7 @@ const InputUsuario = styled.input`
     outline: none;
     background-color: #eaeaea;
 }
+
 `
 const InputMensagem = styled.input`
   width: 58%;
@@ -51,6 +53,7 @@ const InputMensagem = styled.input`
     background-color: #eaeaea;
 }
 `
+
 const BotaoEnviar = styled.button`
   width: 13%;
   border-radius: 5px;
@@ -62,7 +65,6 @@ const BotaoEnviar = styled.button`
     transition: ease 0.2s;
   }
 `
-
 const BalaoMensagem = styled.p`
     color: whitesmoke;
     padding: 8px 4px;
@@ -82,6 +84,7 @@ const BalaoMensagemDireita = styled(BalaoMensagem)`
     background-color: #056162;
     place-self: flex-end;
 `
+
 const BalaoMensagemEsquerda = styled(BalaoMensagem)`
     background-color: #262d31;
 `
@@ -95,24 +98,22 @@ class DinamicaTexto extends React.Component {
                 mensagem: ""
             }
         ],
-        listaDeMensagens: [],
-
         valorInputUsuario: "",
         valorInputMensagem: ""
     };
 
     adicionaChat = (event) => {
         event.preventDefault()
-        
-        if (this.state.valorInputUsuario != "" && this.state.valorInputMensagem != "") {
-            
+
+        if (this.state.valorInputUsuario !== "" && this.state.valorInputMensagem !== "") {
+
             const novoChat = {
                 usuario: this.state.valorInputUsuario + ":",
                 mensagem: this.state.valorInputMensagem
-            };
-    
-            const novasMensagens = [novoChat, ...this.state.mensagens];
-    
+            }
+
+            const novasMensagens = [novoChat, ...this.state.mensagens]
+
             this.setState({ mensagens: novasMensagens, valorInputMensagem: "" })
 
         } else {
@@ -129,31 +130,43 @@ class DinamicaTexto extends React.Component {
         this.setState({ valorInputMensagem: event.target.value });
     };
 
+    deletarMensagem = (mensagemDoUsuario) => {
+
+        if (window.confirm('Você realmente deseja excluir esta mensagem?')) {
+            this.setState({
+                mensagens: this.state.mensagens.filter(mensagem => mensagemDoUsuario !== mensagem.mensagem)
+            })
+        }
+    }
+
 
     render() {
-        const listaDeComponentes = this.state.mensagens.map((mensagem) => {
+        const listaDeComponentes = this.state.mensagens.map((mensagem, index) => {
             
             if (mensagem.usuario === "eu:") {
                 return (
-                <BalaoMensagemDireita><strong>{mensagem.usuario}</strong> {mensagem.mensagem}</BalaoMensagemDireita>
+                    <BalaoMensagemDireita
+                        key={index}
+                        onDoubleClick={() => { this.deletarMensagem(mensagem.mensagem) }}>
+                        <strong>{mensagem.usuario}</strong> {mensagem.mensagem}
+                    </BalaoMensagemDireita>
                 )
             } else {
                 return (
-                    <BalaoMensagemEsquerda><strong>{mensagem.usuario}</strong> {mensagem.mensagem}</BalaoMensagemEsquerda>
+                    <BalaoMensagemEsquerda
+                        key={index}
+                        onDoubleClick={() => { this.deletarMensagem(mensagem.mensagem) }}>
+                        <strong>{mensagem.usuario}</strong> {mensagem.mensagem}
+                    </BalaoMensagemEsquerda>
                 )
             }
         });
 
-
-
         return (
-
             <Main>
-
                 <DivChat>
                     {listaDeComponentes}
                 </DivChat>
-
 
                 <Form onSubmit={this.adicionaChat}>
                     <InputUsuario
@@ -170,11 +183,7 @@ class DinamicaTexto extends React.Component {
                     />
                     <BotaoEnviar type={"submit"}>Enviar</BotaoEnviar>
                 </Form>
-
-
-
             </Main>
-
         );
     }
 }

@@ -1,7 +1,6 @@
 import './App.css';
 import styled, { createGlobalStyle } from 'styled-components'
-import './components/dinamicaTexto'
-import DinamicaTexto from './components/dinamicaTexto';
+import DinamicaTexto from './components/DinamicaTexto';
 
 // Estilos definidos aqui serão aplicados a toda a aplicação
 const GlobalStyle = createGlobalStyle`
