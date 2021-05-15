@@ -1,5 +1,6 @@
 import React from "react";
 import styled from 'styled-components';
+import BalaoDeMensagem from './BalaoDeMensagem'
 
 
 const Main = styled.div`
@@ -65,39 +66,11 @@ const BotaoEnviar = styled.button`
     transition: ease 0.2s;
   }
 `
-const BalaoMensagem = styled.p`
-    color: whitesmoke;
-    padding: 8px 4px;
-    border-radius: 5px;
-    margin: 2px 10px;
-    width: fit-content;
-    max-width: 90%;
-    overflow-wrap: anywhere;
-
-    :last-child{
-        margin-top: 20px;
-        padding: 0;
-        margin: 0;
-    }
-`
-const BalaoMensagemDireita = styled(BalaoMensagem)`
-    background-color: #056162;
-    place-self: flex-end;
-`
-
-const BalaoMensagemEsquerda = styled(BalaoMensagem)`
-    background-color: #262d31;
-`
 
 
 class DinamicaTexto extends React.Component {
     state = {
-        mensagens: [
-            {
-                usuario: "",
-                mensagem: ""
-            }
-        ],
+        mensagens: [],
         valorInputUsuario: "",
         valorInputMensagem: ""
     };
@@ -130,11 +103,11 @@ class DinamicaTexto extends React.Component {
         this.setState({ valorInputMensagem: event.target.value });
     };
 
-    deletarMensagem = (mensagemDoUsuario) => {
+    deletarMensagem = (indexApagar) => {
 
         if (window.confirm('Você realmente deseja excluir esta mensagem?')) {
             this.setState({
-                mensagens: this.state.mensagens.filter(mensagem => mensagemDoUsuario !== mensagem.mensagem)
+                mensagens: this.state.mensagens.filter((mensagem, indice) => indexApagar !== indice)
             })
         }
     }
@@ -142,26 +115,15 @@ class DinamicaTexto extends React.Component {
 
     render() {
         const listaDeComponentes = this.state.mensagens.map((mensagem, index) => {
-            
-            if (mensagem.usuario === "eu:") {
-                return (
-                    <BalaoMensagemDireita
-                        key={index}
-                        onDoubleClick={() => { this.deletarMensagem(mensagem.mensagem) }}>
-                        <strong>{mensagem.usuario}</strong> {mensagem.mensagem}
-                    </BalaoMensagemDireita>
-                )
-            } else {
-                return (
-                    <BalaoMensagemEsquerda
-                        key={index}
-                        onDoubleClick={() => { this.deletarMensagem(mensagem.mensagem) }}>
-                        <strong>{mensagem.usuario}</strong> {mensagem.mensagem}
-                    </BalaoMensagemEsquerda>
-                )
-            }
+            return <BalaoDeMensagem 
+            usuario={mensagem.usuario}
+            mensagem={mensagem.mensagem}
+            index={index}
+            funcaoDeletar={this.deletarMensagem}
+            />
         });
-
+        console.log(listaDeComponentes)
+        
         return (
             <Main>
                 <DivChat>
